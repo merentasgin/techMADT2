@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 using techMADT2.Core.Entities;
 
 
@@ -13,6 +12,17 @@ namespace techMADT2.Data.Configurations
             builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
 
             builder.Property(x => x.Logo).HasMaxLength(50);
+
+            new Brand
+            {
+                Id =1,
+                Name = "Samsung",
+                IsActive = true,
+                OrderNo = 1,
+                CreateDate = DateTime.Now,
+
+
+            };
         }
     }
 }

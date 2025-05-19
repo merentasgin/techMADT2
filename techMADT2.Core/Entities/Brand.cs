@@ -22,11 +22,9 @@ namespace techMADT2.Core.Entities
 
         public int OrderNo { get; set; }
         [Display(Name = "Kayıt Tarihi"), ScaffoldColumn(false)]
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; set; }= DateTime.Now; 
         
-
-        
-        public IList<Product> Products { get; set; }
+        public IList<Product>? Products { get; set; }
 
 
 
