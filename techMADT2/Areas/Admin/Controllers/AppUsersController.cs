@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using techMADT2.Data;
 namespace techMADT2.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Policy ="AdminPolicy")]
     public class AppUsersController : Controller
     {
         private readonly DatabaseContext _context;
@@ -51,8 +53,7 @@ namespace techMADT2.Areas.Admin.Controllers
         }
 
         // POST: Admin/AppUsers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create( AppUser appUser)

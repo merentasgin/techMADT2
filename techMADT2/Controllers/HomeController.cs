@@ -31,6 +31,11 @@ namespace techMADT2.Controllers
         {
             return View();
         }
+        [Route("AccessDenied")]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
         public IActionResult ContactUs()
         {
             return View();
