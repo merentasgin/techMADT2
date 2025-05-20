@@ -17,7 +17,7 @@ namespace techMADT2.Controllers
         public IActionResult Index()
         {
             var favoriler =GetFavorites();
-            return View();
+            return View(favoriler);
         }
         private List<Product> GetFavorites()
         {
@@ -32,6 +32,20 @@ namespace techMADT2.Controllers
             {
 
                 favoriler.Add(product);
+                HttpContext.Session.SetJson("GetFavorites", favoriler);
+
+
+            }
+            return RedirectToAction("Index");
+        }
+        public IActionResult Remove(int ProductId)
+        {
+            var favoriler = GetFavorites();
+            var product = _context.Products.Find(ProductId);
+            if (product != null && favoriler.Any(p => p.Id == ProductId))
+            {
+
+                favoriler.RemoveAll(i=>i.Id==product.Id);
                 HttpContext.Session.SetJson("GetFavorites", favoriler);
 
 

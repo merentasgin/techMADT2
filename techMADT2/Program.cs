@@ -34,7 +34,7 @@ public static void Main(string[] args)
                 {
 
 
-                    x.LoginPath = "/Account/Sign";
+                    x.LoginPath = "/Account/SignIn";
                     x.AccessDeniedPath = "/AccessDenied";
                     x.Cookie.Name= "Account";
                     x.Cookie.MaxAge = TimeSpan.FromDays(7);

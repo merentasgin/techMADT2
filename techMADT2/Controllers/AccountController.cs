@@ -20,6 +20,61 @@ namespace techMADT2.Controllers
         [Authorize]
         public IActionResult Index()
         {
+            var userIdClaim = HttpContext.User.FindFirst("UserId")?.Value;
+            AppUser user = _context.AppUsers.FirstOrDefault(x => x.Id.ToString() == userIdClaim);
+
+            if (user is null) 
+            {
+                return NotFound();
+            }
+            var model = new UserEditViewModel()
+            { 
+                Email = user.Email,
+                Id = user.Id,
+                Name = user.Name,
+                Password = user.Password,
+                Phone = user.Phone,
+                Surname = user.Surname,
+            };
+            return View(model);
+        }
+        [HttpPost, Authorize]
+        public IActionResult Index(UserEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var userIdClaim = HttpContext.User.FindFirst("UserId")?.Value;
+                    AppUser user = _context.AppUsers.FirstOrDefault(x => x.Id.ToString() == userIdClaim);
+
+                    if (user is not null) { 
+                        user.Email = model.Email;
+                        user.Phone = model.Phone;
+                        user.Name = model.Name;
+                        user.Surname = model.Surname;
+                        user.Password = model.Password;
+                        _context.AppUsers.Update(user);
+                        var sonuc=_context.SaveChanges();
+                        if (sonuc > 0)
+                        {
+                            TempData["Message"] = @"<div class=""alert alert-success alert-dismissible fade show"" role=""alert"">
+                           <strong>Bilgileriniz güncellenmiştir!</strong> 
+  <button type=""button"" class=""btn-close"" data-bs-dismiss=""alert"" aria-label=""Close""></button>
+</div>";
+                            return RedirectToAction("Index");
+                        }
+
+                    }
+                    _context.AppUsers.Update(user);
+                    _context.SaveChanges();
+                }
+                catch (Exception)
+                {
+
+                    ModelState.AddModelError("", "Hata Oluştu!");
+                }
+            }
             return View();
         }
         public IActionResult SignIn()
@@ -34,7 +89,7 @@ namespace techMADT2.Controllers
                 try
                 {
                     var account = await _context.AppUsers.FirstOrDefaultAsync(x=>x.Email==
-                    loginViewModel.Email& x.Password==loginViewModel.Password & x.IsActive);
+                    loginViewModel.Email & x.Password==loginViewModel.Password & x.IsActive);
                     if (account == null)
                     {
 
@@ -70,7 +125,13 @@ namespace techMADT2.Controllers
             return View();
         }
         [HttpPost]
+
+      
+      
+
         public async Task<IActionResult> SignUpAsync(AppUser appUser)
+
+        
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +141,7 @@ namespace techMADT2.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(appUser); ;
+            return View(appUser); 
         }
         public async Task<IActionResult> SignOutAsync()
         {
