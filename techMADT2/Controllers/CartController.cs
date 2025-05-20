@@ -1,4 +1,5 @@
 ﻿using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using techMADT2.Core.Entities;
 using techMADT2.ExtensionMethods;
@@ -61,6 +62,17 @@ namespace techMADT2.Controllers
                
             }
             return RedirectToAction("Index");
+        }
+        [Authorize]
+        public IActionResult CheckOut()
+        {
+            var cart = GetCart();
+            var model = new CheckOutViewModel()
+            {
+                CartProducts = cart.CartLines,
+                TotalPrice = cart.TotalPrice()
+            };
+            return View(model);
         }
         private CartService GetCart()
         {

@@ -10,6 +10,7 @@ namespace techMADT2.Data
     public class DatabaseContext : DbContext
     {
         public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<Address> Addresses { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Contact> Contacts { get; set; }

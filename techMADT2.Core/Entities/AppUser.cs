@@ -28,5 +28,6 @@ namespace techMADT2.Core.Entities
 
         [ScaffoldColumn(false)] // CRUD sayfası oluştururken bu değişkenin oluşmasını engeller
         public Guid? UpdateDate { get; set; } = Guid.NewGuid();
+        public List<Address>? addresses { get; set; }
     }
 }

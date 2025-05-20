@@ -103,6 +103,7 @@ namespace techMADT2.Controllers
                          new(ClaimTypes.Role, account.IsAdmin ? "Admin" : "Customer"),
                          new(ClaimTypes.Email, account.Email),
                          new("UserId", account.Id.ToString()),
+                         
                         };
                         var userIdentity = new ClaimsIdentity(claims, "Login");
                         ClaimsPrincipal userPrincipal = new ClaimsPrincipal(userIdentity);
