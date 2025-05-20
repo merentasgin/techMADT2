@@ -1,13 +1,15 @@
-using techMADT2.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
+using techMADT2.Data;
+using techMADT2.Service.Abstract;
+using techMADT2.Service.Abstract.Concrete;
 
 namespace techMADT2
 {
     public class Program
     {
 
-public static void Main(string[] args)
+        public static void Main(string[] args)
         {
 
 
@@ -15,6 +17,7 @@ public static void Main(string[] args)
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            
 
             builder.Services.AddSession(options =>
             {
@@ -28,6 +31,7 @@ public static void Main(string[] args)
             });
 
             builder.Services.AddDbContext<DatabaseContext>();
+            builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
                 AddCookie(x =>

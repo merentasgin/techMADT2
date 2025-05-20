@@ -1,27 +1,27 @@
 ﻿using Microsoft.AspNetCore.Authentication;//login
 using Microsoft.AspNetCore.Authorization;//login
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims; //login
 using techMADT2.Core.Entities;
-using techMADT2.Data;
 using techMADT2.Models;
+using techMADT2.Service.Abstract;
 
 namespace techMADT2.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly DatabaseContext _context;
+        private readonly IService<AppUser> _service;
 
-        public AccountController(DatabaseContext context)
+        public AccountController(IService<AppUser> service)
         {
-            _context = context;
+            _service = service;
         }
+
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var userIdClaim = HttpContext.User.FindFirst("UserId")?.Value;
-            AppUser user = _context.AppUsers.FirstOrDefault(x => x.Id.ToString() == userIdClaim);
+            AppUser user = await _service.GetAsync(x => x.Id.ToString() == userIdClaim);
 
             if (user is null) 
             {
@@ -39,14 +39,14 @@ namespace techMADT2.Controllers
             return View(model);
         }
         [HttpPost, Authorize]
-        public IActionResult Index(UserEditViewModel model)
+        public async Task<IActionResult> IndexAsync(UserEditViewModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     var userIdClaim = HttpContext.User.FindFirst("UserId")?.Value;
-                    AppUser user = _context.AppUsers.FirstOrDefault(x => x.Id.ToString() == userIdClaim);
+                    AppUser user = await _service.GetAsync(x => x.Id.ToString() == userIdClaim);
 
                     if (user is not null) { 
                         user.Email = model.Email;
@@ -54,8 +54,8 @@ namespace techMADT2.Controllers
                         user.Name = model.Name;
                         user.Surname = model.Surname;
                         user.Password = model.Password;
-                        _context.AppUsers.Update(user);
-                        var sonuc=_context.SaveChanges();
+                        _service.Update(user);
+                        var sonuc=_service.SaveChanges();
                         if (sonuc > 0)
                         {
                             TempData["Message"] = @"<div class=""alert alert-success alert-dismissible fade show"" role=""alert"">
@@ -66,8 +66,8 @@ namespace techMADT2.Controllers
                         }
 
                     }
-                    _context.AppUsers.Update(user);
-                    _context.SaveChanges();
+                    _service.Update(user);
+                    _service.SaveChanges();
                 }
                 catch (Exception)
                 {
@@ -88,7 +88,7 @@ namespace techMADT2.Controllers
 
                 try
                 {
-                    var account = await _context.AppUsers.FirstOrDefaultAsync(x=>x.Email==
+                    var account = await _service.GetAsync (x=>x.Email==
                     loginViewModel.Email & x.Password==loginViewModel.Password & x.IsActive);
                     if (account == null)
                     {
@@ -137,8 +137,8 @@ namespace techMADT2.Controllers
             {
                 appUser.IsAdmin = false;
                 appUser.IsActive = true;
-                await _context.AddAsync(appUser);
-                await _context.SaveChangesAsync();
+                await _service.AddAsync(appUser);
+                await _service.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(appUser); 

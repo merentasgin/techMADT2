@@ -1,28 +1,33 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using techMADT2.Core.Entities;
-using techMADT2.Data;
 using techMADT2.Models;
+using techMADT2.Service.Abstract;
 
 namespace techMADT2.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly DatabaseContext _context;
+        private readonly IService<Product> _serviceProduct;
+        private readonly IService<Slider> _serviceSlider;
+        private readonly IService<News> _serviceNews;
+        private readonly IService<Contact> _serviceContact;
 
-        public HomeController(DatabaseContext context)
+        public HomeController(IService<Product> serviceProduct, IService<Slider> serviceSlider, IService<News> serviceNews, IService<Contact> serviceContact)
         {
-            _context = context;
+            _serviceProduct = serviceProduct;
+            _serviceSlider = serviceSlider;
+            _serviceNews = serviceNews;
+            _serviceContact = serviceContact;
         }
 
         public async Task<IActionResult> Index()
         {
             var model = new HomePageViewModel()
             {
-                Sliders= await _context.Sliders.ToListAsync(),
-                News= await _context.News.ToListAsync(),
-                Products= await _context.Products.Where(p=>p.IsActive&&p.IsHome).ToListAsync()
+                Sliders= await _serviceSlider.GetAllAsync(),
+                News = await _serviceNews.GetAllAsync(),
+                Products = await _serviceProduct.GetAllAsync(p=>p.IsActive&&p.IsHome)
             };
             return View(model);
         }
@@ -41,14 +46,14 @@ namespace techMADT2.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult ContactUs(Contact contact)
+        public async Task<IActionResult> ContactUsAsync(Contact contact)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Contacts.Add(contact);
-                    var sonuc= _context.SaveChanges();
+                    await _serviceContact.AddAsync(contact);
+                    var sonuc= _serviceContact.SaveChanges();
                     if (sonuc>0)
                     {
                         TempData["Message"] = @"<div class=""alert alert-success alert-dismissible fade show"" role=""alert"">

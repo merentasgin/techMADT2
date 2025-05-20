@@ -1,38 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using techMADT2.Core.Entities;
-using techMADT2.Data;
 using techMADT2.Models;
+using techMADT2.Service.Abstract;
 
 namespace techMADT2.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly DatabaseContext _context;
+        private readonly IService<Product> _serviceProduct;
 
-       
-        public ProductsController(DatabaseContext context)
+        public ProductsController(IService<Product> serviceProduct)
         {
-            _context = context;
+            _serviceProduct = serviceProduct;
         }
-        public async Task<IActionResult> Index(string q = "", int? categoryId = null)
+
+        public async Task<IActionResult> Index(string q = "")
         {
-            IQueryable<Product> products = _context.Products
-                .Where(p => p.IsActive)
-                .Include(p => p.Brand)
-                .Include(p => p.Category);
-
-            if (!string.IsNullOrEmpty(q))
-            {
-                products = products.Where(p => p.Name.Contains(q) || p.Description.Contains(q));
-            }
-
-            if (categoryId != null)
-            {
-                products = products.Where(p => p.CategoryId == categoryId);
-            }
-
-            return View(await products.ToListAsync());
+           var databaseContext=_serviceProduct.GetAllAsync(p=>p.IsActive&&p.Name.Contains(q)||p.Description.Contains(q));
+            return View(await databaseContext);
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -42,7 +28,7 @@ namespace techMADT2.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
+            var product = await _serviceProduct.GetQueryable()
                 .Include(p => p.Brand)
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -53,7 +39,7 @@ namespace techMADT2.Controllers
             var model = new ProductDetailViewModel()
             {
                 Product= product,
-                RelatedProducts= _context.Products.Where(p => p.IsActive && p.CategoryId==product.CategoryId && p.Id != product.Id)
+                RelatedProducts= _serviceProduct.GetQueryable().Where(p => p.IsActive && p.CategoryId==product.CategoryId && p.Id != product.Id)
             };
             return View(model);
 

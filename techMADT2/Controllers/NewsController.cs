@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using techMADT2.Data;
+using techMADT2.Core.Entities;
+using techMADT2.Service.Abstract;
 
 namespace techMADT2.Controllers
 {
     public class NewsController : Controller
     {
-        private readonly DatabaseContext _context;
+        private readonly IService<News> _service;
 
-        public NewsController(DatabaseContext context)
+        public NewsController(IService<News> service)
         {
-            _context = context;
+            _service = service;
         }
         public async Task<IActionResult> Index()
         {
-            return View(await _context.News.ToListAsync());
+            return View(await _service.GetAllAsync());
         }
         public async Task<IActionResult> Details(int? id)
         {
@@ -23,8 +23,7 @@ namespace techMADT2.Controllers
                 return NotFound();
             }
 
-            var news = await _context.News
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var news = await _service.GetAsync(m => m.Id == id);
             if (news == null)
             {
                 return NotFound();

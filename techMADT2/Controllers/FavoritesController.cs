@@ -1,18 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using techMADT2.Core.Entities;
-using techMADT2.Data;
 using techMADT2.ExtensionMethods;
+using techMADT2.Service.Abstract;
 
 namespace techMADT2.Controllers
 {
     public class FavoritesController : Controller
     {
 
-        private readonly DatabaseContext _context;
+        private readonly IService<Product> _service;
 
-        public FavoritesController(DatabaseContext context)
+        public FavoritesController(IService<Product> service)
         {
-            _context = context;
+            _service = service;
         }
         public IActionResult Index()
         {
@@ -27,7 +27,7 @@ namespace techMADT2.Controllers
         public IActionResult Add(int ProductId)
         {
             var favoriler = GetFavorites();
-            var product= _context.Products.Find(ProductId);
+            var product= _service.Find(ProductId);
             if (product != null && !favoriler.Any(p=>p.Id == ProductId))
             {
 
@@ -41,7 +41,7 @@ namespace techMADT2.Controllers
         public IActionResult Remove(int ProductId)
         {
             var favoriler = GetFavorites();
-            var product = _context.Products.Find(ProductId);
+            var product = _service.Find(ProductId);
             if (product != null && favoriler.Any(p => p.Id == ProductId))
             {
 
