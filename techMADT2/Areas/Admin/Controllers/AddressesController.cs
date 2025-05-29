@@ -52,11 +52,10 @@ namespace techMADT2.Areas.Admin.Controllers
         }
 
         // POST: Admin/Addresses/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,City,District,OpenAddress,IsActive,IsBillingAddress,IsDeliveryAddress,AppUserId")] Address address)
+        public async Task<IActionResult> Create(Address address)
         {
             if (ModelState.IsValid)
             {
@@ -86,8 +85,7 @@ namespace techMADT2.Areas.Admin.Controllers
         }
 
         // POST: Admin/Addresses/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,City,District,OpenAddress,IsActive,IsBillingAddress,IsDeliveryAddress,AppUserId")] Address address)

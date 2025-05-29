@@ -13,6 +13,11 @@ namespace techMADT2.Data.Configurations
 
             builder.Property(x => x.Image).HasMaxLength(100);
             builder.Property(x => x.ProductCode).HasMaxLength(50);
+            builder.HasOne(p => p.Category)
+       .WithMany(c => c.Products)
+       .HasForeignKey(p => p.CategoryId)
+       .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

@@ -95,5 +95,10 @@ namespace techMADT2.Service.Abstract.Concrete
         {
            _dbSet.Update(entity);
         }
+
+        Task IService<T>.AddAsync(Func<object, bool> value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

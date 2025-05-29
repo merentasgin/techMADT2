@@ -10,14 +10,16 @@ namespace techMADT2.Data
     public class DatabaseContext : DbContext
     {
         public DbSet<AppUser> AppUsers { get; set; }
-        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Address> Addresses{ get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<News> News { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Slider> Sliders { get; set; }
-
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderLine> OrderLines { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=DESKTOP-8DJL0C5\SQLEXPRESS;Database=techMADTDb;Trusted_Connection=True;TrustServerCertificate=True;");

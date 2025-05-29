@@ -13,7 +13,7 @@ namespace techMADT2.Controllers
         {
             _service = service;
         }
-        public async Task<IActionResult> IndexAsync(int? id)
+        public async Task<IActionResult> Index(int? id)
         {
 
             if (id == null)

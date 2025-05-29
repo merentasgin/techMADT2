@@ -5,6 +5,7 @@ namespace techMADT2.Core.Entities
     public class AppUser : IEntity
 
     {
+        public Guid? UserGuid { get; set; } = Guid.NewGuid();
         public int Id { get; set; }
         [Display(Name="Adı")]
         public string Name { get; set; }
@@ -19,7 +20,7 @@ namespace techMADT2.Core.Entities
         [Display(Name = "Kullanıcı Adı")]
         public string? UserName { get; set; } = string.Empty;
         [Display(Name = "Aktif?")]
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } 
         [Display(Name = "Admin?")]
         public bool IsAdmin { get; set; }
         [Display(Name = "Kayıt Tarihi"),ScaffoldColumn(false)]
@@ -28,6 +29,6 @@ namespace techMADT2.Core.Entities
 
         [ScaffoldColumn(false)] // CRUD sayfası oluştururken bu değişkenin oluşmasını engeller
         public Guid? UpdateDate { get; set; } = Guid.NewGuid();
-        public List<Address>? addresses { get; set; }
+        public List<Address>? Addresses { get; set; }
     }
 }

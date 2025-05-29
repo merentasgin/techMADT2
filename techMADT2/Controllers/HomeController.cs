@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using techMADT2.Core.Entities;
 using techMADT2.Models;
 using techMADT2.Service.Abstract;
+using techMADT2.Utits;
 
 namespace techMADT2.Controllers
 {
@@ -12,13 +14,15 @@ namespace techMADT2.Controllers
         private readonly IService<Slider> _serviceSlider;
         private readonly IService<News> _serviceNews;
         private readonly IService<Contact> _serviceContact;
+        private readonly IService<Category> _serviceCategory;
 
-        public HomeController(IService<Product> serviceProduct, IService<Slider> serviceSlider, IService<News> serviceNews, IService<Contact> serviceContact)
+        public HomeController(IService<Product> serviceProduct, IService<Slider> serviceSlider, IService<News> serviceNews, IService<Contact> serviceContact, IService<Category> serviceCategory)
         {
             _serviceProduct = serviceProduct;
             _serviceSlider = serviceSlider;
             _serviceNews = serviceNews;
             _serviceContact = serviceContact;
+            _serviceCategory = serviceCategory;
         }
 
         public async Task<IActionResult> Index()
@@ -26,8 +30,9 @@ namespace techMADT2.Controllers
             var model = new HomePageViewModel()
             {
                 Sliders= await _serviceSlider.GetAllAsync(),
-                News = await _serviceNews.GetAllAsync(),
-                Products = await _serviceProduct.GetAllAsync(p=>p.IsActive&&p.IsHome)
+                News = await _serviceNews.GetAllAsync(news=>news.IsActive),
+                Products = await _serviceProduct.GetAllAsync(p=>p.IsActive&&p.IsHome),
+                 Categories = await _serviceCategory.GetQueryable().Include(c => c.Products).ToListAsync()
             };
             return View(model);
         }
@@ -60,6 +65,7 @@ namespace techMADT2.Controllers
                            <strong>Mesajýnýz Gönderilmiþtir!</strong> 
   <button type=""button"" class=""btn-close"" data-bs-dismiss=""alert"" aria-label=""Close""></button>
 </div>";
+                       //await MailHelper.SendMailAsync(contact);
                         return RedirectToAction("ContactUs");
                     }
                 }

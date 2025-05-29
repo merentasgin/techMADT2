@@ -9,24 +9,24 @@
                 </a>
                 <a class="nav-link" href="/Admin/AppUsers">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-users"></i></div>
-                    Kullanıcı Yönetimi
+                    Kullanıcılar
                     <a class="nav-link" href="/Admin/Addresses">
                         <div class="sb-nav-link-icon"><i class="fa-solid fa-users"></i></div>
-                        Adres Yönetimi
+                        Adresler
                     </a>
                 </a>
                 <a class="nav-link" href="/Admin/Brands">
                     <div class="sb-nav-link-icon"><i class="fa-regular fa-copyright"></i></div>
-                    Marka Yönetimi
+                    Markalar
                 </a>
 
                 <a class="nav-link" href="/Admin/Categories">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-list"></i></div>
-                    Kategori Yönetimi
+                    Kategoriler
                 </a>
                 <a class="nav-link" href="/Admin/Products">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-barcode"></i></div>
-                    Ürün Yönetimi
+                    Ürünler
                 </a>
 
                 <a class="nav-link" href="/Admin/News">
@@ -35,18 +35,22 @@
                 </a>
                 <a class="nav-link" href="/Admin/Sliders">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-layer-group"></i></div>
-                    Reklam Yönetimi
+                    Reklam 
                 </a>
                 <a class="nav-link" href="/Admin/Contacts">
                     <div class="sb-nav-link-icon"><i class="fa-regular fa-comments"></i></div>
-                    İletişim Formları
+                    İletişim Mesajları
+                </a>
+                <a class="nav-link" href="/Admin/Orders">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                    Gelen Siparişler
                 </a>
                
             </div>
         </div>
         <div class="sb-sidenav-footer">
-            <div class="small">Logged in as:</div>
-            Admin
+            <div class="small">Hoşgeldin Patron:</div>
+            @Context.User.Identity.Name
         </div>
     </nav>
 </div>

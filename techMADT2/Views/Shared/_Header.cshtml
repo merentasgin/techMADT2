@@ -24,12 +24,14 @@
                 {
                     <div class="dropdown">
                         <a class="dropdown-toggle nav-link text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Hesabım
+                          <i class="bi bi-person-fill"></i>  Hesabım
                         </a>
 
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/Account">Kullanıcı Bilgilerim</a></li>
-                            <li><a class="dropdown-item" href="/Account/">Siparişlerim</a></li>
+                            <li><a class="dropdown-item" href="/MyAddresses">Kayıtlı Adreslerim</a></li>
+                            
+                            <li><a class="dropdown-item" href="/Account/MyOrders">Siparişlerim</a></li>
                             <li><a class="dropdown-item" href="/Account/">Değerlendirmelerim</a></li>
                             <li class="text-center"><a class="btn btn-danger " href="/Account/SignOut">Oturumu Kapat</a></li>
 
@@ -41,7 +43,7 @@
                 {
                     <div class="dropdown">
                     <a class="dropdown-toggle nav-link text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Hesabım
+                        <i class="bi bi-person"></i>Hesabım
                     </a>
 
                     <ul class="dropdown-menu">
@@ -55,7 +57,18 @@
                 
                     <div class="dropdown mx-3 ">
                     <a class=" nav-link text-dark" href="/Favorites" >
-                        Favorilerim
+                        @{
+                            var favorites = Context.Session.GetJson<List<Product>>("GetFavorites");
+                            if(favorites is not null && favorites.Count > 0)
+                            {
+                                <i class=" bi bi-heart-fill  m-1"></i>@:Favorilerim(@favorites.Count)
+                            }
+                            else
+                            {
+                                <i class=" bi bi-heart m-1"></i>@:Favorilerim
+                            }
+                        }
+                        
                     </a>
 
                 </div>
@@ -65,7 +78,7 @@
                     if (cart != null && cart.CartLines.Count > 0)
                     {
                         <a class="dropdown-toggle nav-link text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Sepetim
+                        <i class="bi bi-cart-fill"></i>Sepetim
                     </a>
 
                     <ul class="dropdown-menu">
@@ -84,7 +97,7 @@
                         else
                         {
                             <a class=" nav-link text-dark" href="/Cart" >
-                        Sepetim
+                       <i class="bi bi-cart"></i> Sepetim
                     </a>
                         }
 

@@ -118,6 +118,9 @@ namespace techMADT2.Data.Migrations
                     b.Property<Guid?>("UpdateDate")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("UserGuid")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
@@ -130,14 +133,15 @@ namespace techMADT2.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2025, 5, 20, 9, 11, 59, 274, DateTimeKind.Local).AddTicks(7473),
+                            CreatedDate = new DateTime(2025, 5, 24, 2, 38, 28, 870, DateTimeKind.Local).AddTicks(9937),
                             Email = "merentasgin@gmail.com",
                             IsActive = true,
                             IsAdmin = true,
                             Name = "Muhammed Eren",
                             Password = "123456*",
                             Surname = "TAŞGİN",
-                            UpdateDate = new Guid("82bdfc19-08eb-4e8a-a7bb-755f5a42751c"),
+                            UpdateDate = new Guid("c25395e8-81c9-423c-a9d4-6ee1217af842"),
+                            UserGuid = new Guid("c4f68378-ab02-4f3c-ae1d-7e9c370438f2"),
                             UserName = "Admin"
                         });
                 });
@@ -224,7 +228,7 @@ namespace techMADT2.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreateDate = new DateTime(2025, 5, 20, 9, 11, 59, 274, DateTimeKind.Local).AddTicks(7992),
+                            CreateDate = new DateTime(2025, 5, 24, 2, 38, 28, 871, DateTimeKind.Local).AddTicks(653),
                             IsActive = true,
                             IsTopMenu = true,
                             Name = "Elektronik",
@@ -234,7 +238,7 @@ namespace techMADT2.Data.Migrations
                         new
                         {
                             Id = 2,
-                            CreateDate = new DateTime(2025, 5, 20, 9, 11, 59, 274, DateTimeKind.Local).AddTicks(7997),
+                            CreateDate = new DateTime(2025, 5, 24, 2, 38, 28, 871, DateTimeKind.Local).AddTicks(660),
                             IsActive = true,
                             IsTopMenu = true,
                             Name = "Bilgisayar",
@@ -314,6 +318,82 @@ namespace techMADT2.Data.Migrations
                     b.ToTable("News");
                 });
 
+            modelBuilder.Entity("techMADT2.Core.Entities.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BillingAddress")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("DeliveryAddress")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("OrderState")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("techMADT2.Core.Entities.OrderLine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UnitPrice")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderLines");
+                });
+
             modelBuilder.Entity("techMADT2.Core.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -371,6 +451,32 @@ namespace techMADT2.Data.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("techMADT2.Core.Entities.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Alt")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImages");
+                });
+
             modelBuilder.Entity("techMADT2.Core.Entities.Slider", b =>
                 {
                     b.Property<int>("Id")
@@ -403,7 +509,7 @@ namespace techMADT2.Data.Migrations
             modelBuilder.Entity("techMADT2.Core.Entities.Address", b =>
                 {
                     b.HasOne("techMADT2.Core.Entities.AppUser", "AppUser")
-                        .WithMany("addresses")
+                        .WithMany("Addresses")
                         .HasForeignKey("AppUserId");
 
                     b.Navigation("AppUser");
@@ -414,6 +520,36 @@ namespace techMADT2.Data.Migrations
                     b.HasOne("techMADT2.Core.Entities.Category", null)
                         .WithMany("Products")
                         .HasForeignKey("CategoryId");
+                });
+
+            modelBuilder.Entity("techMADT2.Core.Entities.Order", b =>
+                {
+                    b.HasOne("techMADT2.Core.Entities.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("techMADT2.Core.Entities.OrderLine", b =>
+                {
+                    b.HasOne("techMADT2.Core.Entities.Order", "Order")
+                        .WithMany("orderLines")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("techMADT2.Core.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("techMADT2.Core.Entities.Product", b =>
@@ -431,9 +567,18 @@ namespace techMADT2.Data.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("techMADT2.Core.Entities.ProductImage", b =>
+                {
+                    b.HasOne("techMADT2.Core.Entities.Product", "Product")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("techMADT2.Core.Entities.AppUser", b =>
                 {
-                    b.Navigation("addresses");
+                    b.Navigation("Addresses");
                 });
 
             modelBuilder.Entity("techMADT2.Core.Entities.Brand", b =>
@@ -444,6 +589,16 @@ namespace techMADT2.Data.Migrations
             modelBuilder.Entity("techMADT2.Core.Entities.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("techMADT2.Core.Entities.Order", b =>
+                {
+                    b.Navigation("orderLines");
+                });
+
+            modelBuilder.Entity("techMADT2.Core.Entities.Product", b =>
+                {
+                    b.Navigation("ProductImages");
                 });
 #pragma warning restore 612, 618
         }

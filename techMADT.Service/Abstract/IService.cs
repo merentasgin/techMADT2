@@ -26,6 +26,6 @@ namespace techMADT2.Service.Abstract
         Task<List<T>> GetAllAsync(Expression<Func<T, bool>> expression);
         Task AddAsync(T entity);
         Task<int > SaveChangesAsync();
-
+        Task AddAsync(Func<object, bool> value);
     }
 }

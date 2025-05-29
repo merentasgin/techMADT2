@@ -23,10 +23,10 @@ namespace techMADT2.Controllers
                 return NotFound();
             }
 
-            var news = await _service.GetAsync(m => m.Id == id);
+            var news = await _service.GetAsync(m => m.Id == id&&m.IsActive);
             if (news == null)
             {
-                return NotFound();
+                return NotFound("Var olan kampanya bulunamadı");
             }
 
             return View(news);

@@ -40,5 +40,6 @@ namespace techMADT2.Core.Entities
         public int OrderNo { get; set; }
         [Display(Name = "Kayıt Tarihi"), ScaffoldColumn(false)]
         public DateTime CreateDate { get; set; }= DateTime.Now;
+        public IList<ProductImage>? ProductImages { get; set; }
     }
 }

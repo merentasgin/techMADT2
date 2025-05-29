@@ -12,15 +12,15 @@ using techMADT2.Data;
 namespace techMADT2.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250520061200_AdreslerEklendi")]
-    partial class AdreslerEklendi
+    [Migration("20250520130247_AddUserGuidToAppUser")]
+    partial class AddUserGuidToAppUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.11")
+                .HasAnnotation("ProductVersion", "8.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -121,6 +121,9 @@ namespace techMADT2.Data.Migrations
                     b.Property<Guid?>("UpdateDate")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("UserGuid")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
@@ -133,14 +136,15 @@ namespace techMADT2.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2025, 5, 20, 9, 11, 59, 274, DateTimeKind.Local).AddTicks(7473),
+                            CreatedDate = new DateTime(2025, 5, 20, 16, 2, 47, 89, DateTimeKind.Local).AddTicks(3321),
                             Email = "merentasgin@gmail.com",
                             IsActive = true,
                             IsAdmin = true,
                             Name = "Muhammed Eren",
                             Password = "123456*",
                             Surname = "TAŞGİN",
-                            UpdateDate = new Guid("82bdfc19-08eb-4e8a-a7bb-755f5a42751c"),
+                            UpdateDate = new Guid("439ba455-2570-44c6-9613-9559f1a1a4d0"),
+                            UserGuid = new Guid("f9ba585e-5b56-4e14-be08-e3195d0b7fac"),
                             UserName = "Admin"
                         });
                 });
@@ -227,7 +231,7 @@ namespace techMADT2.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreateDate = new DateTime(2025, 5, 20, 9, 11, 59, 274, DateTimeKind.Local).AddTicks(7992),
+                            CreateDate = new DateTime(2025, 5, 20, 16, 2, 47, 89, DateTimeKind.Local).AddTicks(3832),
                             IsActive = true,
                             IsTopMenu = true,
                             Name = "Elektronik",
@@ -237,7 +241,7 @@ namespace techMADT2.Data.Migrations
                         new
                         {
                             Id = 2,
-                            CreateDate = new DateTime(2025, 5, 20, 9, 11, 59, 274, DateTimeKind.Local).AddTicks(7997),
+                            CreateDate = new DateTime(2025, 5, 20, 16, 2, 47, 89, DateTimeKind.Local).AddTicks(3834),
                             IsActive = true,
                             IsTopMenu = true,
                             Name = "Bilgisayar",
