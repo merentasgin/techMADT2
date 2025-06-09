@@ -22,9 +22,19 @@ namespace techMADT2.Data
         public DbSet<OrderLine> OrderLines { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-8DJL0C5\SQLEXPRESS;Database=techMADTDb;Trusted_Connection=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer(@"Server=tcp:techmadtt.database.windows.net,1433;
+              Initial Catalog=techMADTazure;
+              Persist Security Info=False;
+              User ID=mami;
+              Password=Muhammed_123;  
+              MultipleActiveResultSets=False;
+              Encrypt=True;
+              TrustServerCertificate=False;
+              Connection Timeout=30;");
 
-            
+
+
+
             base.OnConfiguring(optionsBuilder);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
